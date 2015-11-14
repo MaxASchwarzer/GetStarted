@@ -7,28 +7,131 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Flask-Social Example </title>
-  <meta name="description" content="A working example of the Flask-Social extension for Flask, a web microframework written in Python">
+  <title>GetStarted! </title>
+  <meta name="description" content="Tinder for entrepreneurs!  The future of startups.  Welcome to GetStarted!">
   <meta name="viewport" content="width=device-width">
   
-  <link rel="stylesheet" href="Flask-Social%20Register_files/bootstrap.css">
+  <link rel="stylesheet" href="Login_files/bootstrap.css">
   
-  <link rel="stylesheet" href="Flask-Social%20Register_files/styles.css">
+  <link rel="stylesheet" href="Login_files/styles.css">
+
+<script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
+<script type = "text/javascript">
+
+	function convertToDataURLviaCanvas(url, callback, outputFormat){
+		var img = new Image();
+		img.crossOrigin = 'Anonymous';
+		img.onload = function(){
+			var canvas = document.createElement('CANVAS');
+			var ctx = canvas.getContext('2d');
+			var dataURL;
+			canvas.height = this.height;
+			canvas.width = this.width;
+			ctx.drawImage(this, 0, 0);
+			dataURL = canvas.toDataURL(outputFormat);
+			callback(dataURL);
+			canvas = null; 
+		};
+		img.src = url;
+}
+	convertToDataURLviaCanvas('http://bit.ly/18g0VNp', function(base64Img){
+		// Base64DataURL
+	});
+
+	var ref = new Firebase("https://newtinder.firebaseio.com/");
+	
+
+	function submitForm() {
+	var email = ["InfoForm"]["email"].value;
+	var fname = ["InfoForm"]["firstName"].value;
+	var lname = ["InfoForm"]["lastName"].value;
+	var role = ["InfoForm"]["role"].value;
+	var skills = ["InfoForm"]["skills"].value;
+	var interests = ["InfoForm"]["interests"].value;
+	var experience = ["InfoForm"]["experience"].value;
+	var bf1 = ["InfoForm"]["bf1"].value;
+	var bf2 = ["InfoForm"]["bf2"].value;
+	var bf3 = ["InfoForm"]["bf3"].value;
+	var bf4 = ["InfoForm"]["bf4"].value;
+	var bf5 = ["InfoForm"]["bf5"].value;
+	var birthdate = ["InfoForm"]["birthdate"].value;
+	var image = ["InfoForm"]["image"].value;
+	var location = ["InfoForm"]["location"].value;
+	var confirm = ["InfoForm"]["confirm"].value;
+	var gender = ["InfoForm"]["gender"].value;
+	var uid;
+	var authData;
+	
+	if (validateForm()) {
+	imageString = convertToDataURLviaCanvas(image, function(base64Img));
+	uid = authData.uid;
+	var sanitizedEmail = string.replace(".", ",")
+	time = new Date(birthdate.split("-").reverse().join("-")).getTime();
+	
+	var dict = { 
+		uid : {
+		"email": email,
+		"firstName": fname,
+		"lastName": lname,
+		"role": role,
+		"skills": skills,
+		"interest": interests,
+		"experience": experience,
+		"gender": gender,
+		"bigFive" : {
+		"agreeableness" : bf1,
+		"conscientiousness" : bf2,
+		"extraversion" : bf3,
+		"neuroticism" : bf4,
+		"openness" : bf5
+		}
+		"birthdate" : time,
+		"image": imageString,
+		"location" : location
+		}
+	}
+	
+	var usersRef = ref.child("users");
+	usersRef.set(dict);
+	}
+	}
+	
+
+	function validateForm() {
+		console.log("Hello!");
+		x = document.forms["InfoForm"]["email"].value
+		y = document.forms["InfoForm"]["confirm"].value
+		authData = ref.getAuth();
+    ref.authWithPassword({
+      email    : x,
+      password : y
+    }, function(error, userData) {
+      if (error) {
+        console.log("Login Failed!", error);
+		window.alert("Your password or email do not match our records.  Please resumbit");
+		return false;
+      } else {
+          console.log("Authenticated successfully with payload:", authData);
+		}
+    });
+	sessionStorage.setItem('email', x);
+	sessionStorage.setItem('uid', ref.getAuth().uid);
+	}
+});
+</script>
   
   
 </head>
-<body class="main main-register">
+<body class="main main-form">
   <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
   <div class="container">
     <div class="navbar">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="https://newtinder.firebaseapp.com/">Flask-Social Example</a>
+      <a class="brand" href="https://newtinder.firebaseapp.com/">GetStarted</a>
       <ul class="nav">
-        <li><a href="http://flask-social-example.herokuapp.com/">Home</a></li><li><a href="http://flask-social-example.herokuapp.com/login">Log in</a></li>
-        <li><a href="http://flask-social-example.herokuapp.com/register">Information</a></li></ul>
-      <ul class="nav pull-right github">
-     </ul>
+        <li><a href=""https://newtinder.firebaseapp.com/">Home</a></li><li><li><a href="https://newtinder.firebaseapp.com/login.html">Log in</a></li>
+        <li><a href="https://newtinder.firebaseapp.com/register.html">Register</a></li></ul>
     </div>
   </div>
 </div>
@@ -38,13 +141,12 @@
 </div>
 
 <div class="row content">
-  <div class="span9 offset1">
-    <form class="well" action="/register" method="POST">
+  <div class="span9 offset2">
+    <form class="well" name = "InfoForm" action="/register" method="POST">
       
   <label for="email">Email</label>
   <input id="email" name="email" type="text">
 
-      
   <label for="firstName">First Name</label>
   <input id="firstName" name="firstName"  type="text">
       
@@ -67,25 +169,28 @@
        not at all, 100 indicating extremely </h5>
 
   <label for="bf1">Openness to exprience</label>
-  <input type="range" name="bf1" id="bf1" value="50" min="0" max="1O0">
+  <input type="range" name="bf1" id="bf1" value="5" min="0" max="10">
 
   <label for="bf2">Conscientiousness</label>
-  <input type="range" name="bf2" id="bf2" value="50" min="0" max="1O0">
+  <input type="range" name="bf2" id="bf2" value="5" min="0" max="10">
 
   <label for="bf3">Extraversion</label>
-  <input type="range" name="bf3" id="bf3" value="50" min="0" max="1O0">
+  <input type="range" name="bf3" id="bf3" value="5" min="0" max="10">
 
   <label for="bf4">Agreeableness</label>
-  <input type="range" name="bf4" id="bf4" value="50" min="0" max="1O0">
+  <input type="range" name="bf4" id="bf4" value="5" min="0" max="10">
 
-  <label for="bf5">Neuroticism</label>
-  <input type="range" name="bf5" id="bf5" value="50" min="0" max="1O0">
+  <label for="bf5" >Neuroticism</label>
+  <input type="range" name="bf5" id="bf5" value="5" min="0" max="10">
 
   <label for="image">Image</label>
   <input type="file" name="image" accept="image/*">
 
   <label for="birthdate">Birthdate</label>
   <input id="birthdate" name="birthdate" type="Double">
+  
+    <label for="gender">Gender</label>
+  <input id="gender" name="gender" type="text">
    
   <label for="location">Location</label>
   <input id="location" name="location" type="text">
@@ -93,18 +198,15 @@
   <label for="confirm">Confirm Password</label>
   <input id="confirm" name="confirm" value="" type="password">
 
-  <button type="submit" class="btn btn-primary btn-large">Register</button>
+  <button type="submit" onclick="event.preventDefault(); return submitForm()" class="btn btn-primary btn-large">Submit</button>
     </form>
   </div>
-  
-   
     </div>
   
 </div>
 <footer class="footer">
-      <p>Copyright © 2012 by Matt Wright</p>
-      <p>This site uses <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a>. You can also <a href="http://www.github.com/mattupstate/flask-social-example">view the source code.</a></p>
-    </footer>
+      <p>Ready to jumpstart your project? GetStarted!</p>
+	  </footer>
   </div>
   
   <script type="text/javascript" src="Flask-Social%20Register_files/jquery-1.js"></script>

@@ -4,9 +4,22 @@
 <!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!-->
 <html class="no-js" lang="en"><!--<![endif]--><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>GetStarted! </title>
+  <meta name="description" content="Tinder for entrepreneurs!  The future of startups.  Welcome to GetStarted!">
+  <meta name="viewport" content="width=device-width">
+  
+  <link rel="stylesheet" href="Login_files/bootstrap.css">
+  
+  <link rel="stylesheet" href="Login_files/styles.css">
+  
+
 <script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
 <script type = "text/javascript">
     // Create a callback which logs the current auth state
+	var ref = new Firebase("https://newtinder.firebaseio.com/");
     function authDataCallback(authData) {
       if (authData) {
         console.log("User " + authData.uid + " is logged in with " + authData.provider);
@@ -15,11 +28,11 @@
       }
     }
     // Register the callback to be fired every time auth state changes
-    var ref = new Firebase("https://newtinder.firebaseio.com/");
+    ref.onAuth(authDataCallback);
 	var x;
 	var y;
 	
-    ref.onAuth(authDataCallback);
+
 	function validateForm() {
 		console.log("Hello!");
 		x = document.forms["LoginForm"]["email"].value
@@ -37,19 +50,10 @@
     });
 	sessionStorage.setItem('email', x);
 	sessionStorage.setItem('uid', ref.getAuth().uid);
+	window.location.replace("https://newtinder.firebaseapp.com/form.html");
 	}
 </script>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>GetStarted </title>
-  <meta name="description" content="A working example of the Flask-Social extension for Flask, a web microframework written in Python">
-  <meta name="viewport" content="width=device-width">
-  
-  <link rel="stylesheet" href="Login_files/bootstrap.css">
-  
-  <link rel="stylesheet" href="Login_files/styles.css">
-  
+
   
 </head>
 <body class="main main-login">
