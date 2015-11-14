@@ -16,61 +16,64 @@
   <link rel="stylesheet" href="Login_files/styles.css">
 
 <script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
-<script type = "text/javascript">
 
-	function convertToDataURLviaCanvas(url, callback, outputFormat){
-		var img = new Image();
-		img.crossOrigin = 'Anonymous';
-		img.onload = function(){
-			var canvas = document.createElement('CANVAS');
-			var ctx = canvas.getContext('2d');
-			var dataURL;
-			canvas.height = this.height;
-			canvas.width = this.width;
-			ctx.drawImage(this, 0, 0);
-			dataURL = canvas.toDataURL(outputFormat);
-			callback(dataURL);
-			canvas = null; 
-		};
-		img.src = url;
-}
-	convertToDataURLviaCanvas('http://bit.ly/18g0VNp', function(base64Img){
-		// Base64DataURL
-	});
+<script type='text/javascript'>
+var imageString;
+function encodeImageFileAsURL(){
+
+    var filesSelected = document.getElementById("inputFileToLoad").files;
+    if (filesSelected.length > 0)
+    {
+        var fileToLoad = filesSelected[0];
+
+        var fileReader = new FileReader();
+
+        fileReader.onload = function(fileLoadedEvent) {
+            var srcData = fileLoadedEvent.target.result; // <--- data: base64
+
+            var newImage = document.createElement('img');
+            newImage.src = srcData;
+
+            document.getElementById("imgTest").innerHTML = newImage.outerHTML;
+			imageString = ("image", document.getElementById("imgTest").innerHTML);
+        }
+        fileReader.readAsDataURL(fileToLoad);
+    }
+};
 
 	var ref = new Firebase("https://newtinder.firebaseio.com/");
 	
 
 	function submitForm() {
-	var email = ["InfoForm"]["email"].value;
-	var fname = ["InfoForm"]["firstName"].value;
-	var lname = ["InfoForm"]["lastName"].value;
-	var role = ["InfoForm"]["role"].value;
-	var skills = ["InfoForm"]["skills"].value;
-	var interests = ["InfoForm"]["interests"].value;
-	var experience = ["InfoForm"]["experience"].value;
-	var bf1 = ["InfoForm"]["bf1"].value;
-	var bf2 = ["InfoForm"]["bf2"].value;
-	var bf3 = ["InfoForm"]["bf3"].value;
-	var bf4 = ["InfoForm"]["bf4"].value;
-	var bf5 = ["InfoForm"]["bf5"].value;
-	var birthdate = ["InfoForm"]["birthdate"].value;
-	var image = ["InfoForm"]["image"].value;
-	var location = ["InfoForm"]["location"].value;
-	var confirm = ["InfoForm"]["confirm"].value;
-	var gender = ["InfoForm"]["gender"].value;
+	var email = document.forms["InfoForm"]["email"].value;
+	var fname = document.forms["InfoForm"]["firstName"].value;
+	var lname = document.forms["InfoForm"]["lastName"].value;
+	var role = document.forms["InfoForm"]["role"].value;
+	var skills = document.forms["InfoForm"]["skills"].value;
+	var interests = document.forms["InfoForm"]["interests"].value;
+	var experience = document.forms["InfoForm"]["experience"].value;
+	var bf1 = document.forms["InfoForm"]["bf1"].value;
+	var bf2 = document.forms["InfoForm"]["bf2"].value;
+	var bf3 = document.forms["InfoForm"]["bf3"].value;
+	var bf4 = document.forms["InfoForm"]["bf4"].value;
+	var bf5 = document.forms["InfoForm"]["bf5"].value;
+	var birthdate = document.forms["InfoForm"]["birthdate"].value;
+	var location = document.forms["InfoForm"]["location"].value;
+	var confirm = document.forms["InfoForm"]["confirm"].value;
+	var gender = document.forms["InfoForm"]["gender"].value;
 	var uid;
-	var authData;
+	var authData = ref.getAuth();
+	var time = new Date(birthdate).getTime();
 	
-	if (validateForm()) {
-	imageString = convertToDataURLviaCanvas(image, function(base64Img));
-	uid = authData.uid;
-	var sanitizedEmail = string.replace(".", ",")
-	time = new Date(birthdate.split("-").reverse().join("-")).getTime();
+	validateForm();
+
+	uid = authData.uid.toString();
+	console.log(imageString);
+	var sanitizedEmail = email.replace(/[.]/g, ",");
 	
-	var dict = { 
-		uid : {
-		"email": email,
+	var dict = {};
+	dict[uid] = {
+		"email": sanitizedEmail,
 		"firstName": fname,
 		"lastName": lname,
 		"role": role,
@@ -84,17 +87,27 @@
 		"extraversion" : bf3,
 		"neuroticism" : bf4,
 		"openness" : bf5
-		}
+		},
 		"birthdate" : time,
 		"image": imageString,
 		"location" : location
-		}
-	}
+	};
 	
-	var usersRef = ref.child("users");
-	usersRef.set(dict);
+	var usersRef = ref.child("Users");
+	usersRef.update(dict);
+	
+	var UsersListRef = ref.child("UsersList");
+	var currentDate = new Date();
+	var time = (+new Date()).toFixed(0);
+	
+	
+	UsersListDict = {};
+	UsersListDict[uid] = time;
+	UsersListRef.update(UsersListDict);
+	
+	window.alert("Thanks!  Head on over to the iOS app to GetStarted!");
 	}
-	}
+
 	
 
 	function validateForm() {
@@ -116,8 +129,7 @@
     });
 	sessionStorage.setItem('email', x);
 	sessionStorage.setItem('uid', ref.getAuth().uid);
-	}
-});
+	};
 </script>
   
   
@@ -184,10 +196,12 @@
   <input type="range" name="bf5" id="bf5" value="5" min="0" max="10">
 
   <label for="image">Image</label>
-  <input type="file" name="image" accept="image/*">
+  <input id="inputFileToLoad" type="file" onchange="encodeImageFileAsURL();" />
+<div id="imgTest"></div>
+
 
   <label for="birthdate">Birthdate</label>
-  <input id="birthdate" name="birthdate" type="Date">
+  <input id="birthdate" name="birthdate" type="Date" min="2000-01-02">
   
     <label for="gender">Gender</label>
   <input id="gender" name="gender" type="text">
@@ -198,6 +212,7 @@
   <label for="confirm">Confirm Password</label>
   <input id="confirm" name="confirm" value="" type="password">
 
+  <label></label>
   <button type="submit" onclick="event.preventDefault(); return submitForm()" class="btn btn-primary btn-large">Submit</button>
     </form>
   </div>
