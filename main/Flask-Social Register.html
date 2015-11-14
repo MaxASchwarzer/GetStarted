@@ -6,11 +6,12 @@
 <html class="no-js" lang="en"><!--<![endif]--><head>
 <script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
 <script type = "text/javascript">
+
+	var ref = new Firebase("https://newtinder.firebaseio.com/");
 	function registerForm() {
 		console.log("Hello!");
 		var x = document.forms["LoginForm"]["email"].value
 		var y = document.forms["LoginForm"]["password"].value
-	    var ref = new Firebase("https://newtinder.firebaseio.com/");
     ref.createUser({
       email    : x,
       password : y
@@ -19,9 +20,21 @@
         console.log("Error creating user:", error);
       } else {
         console.log("Successfully created user account with uid:", userData.uid);
+		window.location.replace(https://newtinder.firebaseapp.com/form.html);
       }
     });
 	}
+	
+	ref.onAuth(function(authData) {
+		if (authData && isNewUser) {
+		// save the user's profile into the database so we can list users,
+		// use them in Security and Firebase Rules, and show profiles
+		ref.child("users").child(authData.uid).set({
+		provider: authData.provider,
+		name: getName(authData)
+		});
+	}
+});
 </script>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
