@@ -4,8 +4,11 @@
 <!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!-->
 <html class="no-js" lang="en"><!--<![endif]--><head>
+<script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
 <script type = "text/javascript">
+
 	function validateForm() {
+		console.log("Hello!");
 		var x = document.forms["LoginForm"]["email"].value
 		var y = document.forms["LoginForm"]["password"].value
 	    var ref = new Firebase("https://newtinder.firebaseio.com/");
@@ -66,7 +69,7 @@
   <input id="password" name="password" value="" type="password">
 
       <label class="checkbox"><input id="remember" name="remember" value="y" type="checkbox"> Remember me</label>
-      <button onsubmit = "return validateForm()" type="submit" class="btn btn-primary btn-large">Login</button>
+      <button onclick="event.preventDefault(); return validateForm()" class="btn btn-primary btn-large">Login</button>
     </form>
   </div>
 </div>
