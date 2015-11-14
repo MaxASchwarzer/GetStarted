@@ -42,17 +42,55 @@
     <form class="well" action="/register" method="POST">
       
   <label for="email">Email</label>
-  
   <input id="email" name="email" type="text">
 
       
-  <label for="password">Password</label>
-  
-  <input id="password" name="password" value="" type="password">
-
+  <label for="firstName">First Name</label>
+  <input id="firstName" name="firstName"  type="text">
       
+  <label for="lastName">Last Name</label>
+  <input id="lastName" name="lastName" type="text">
+
+  <label for="role">Role</label>
+  <input id="role" name="role" type="text">
+
+  <label for="skills">Skills</label>
+  <input id="skills" name="skills" type="text">
+
+  <label for="interests">Interests</label>
+  <input id="interests" name="interests" type="text">
+
+  <label for="experience">Experience</label>
+  <input id="experience" name="experience" type="text">
+
+  <h5> Please assess yourself on the following 'Big 5 Criteria'. 0 indicating
+       not at all, 100 indicating extremely </h5>
+
+  <label for="bf1">Openness to exprience</label>
+  <input type="range" name="bf1" id="bf1" value="50" min="0" max="1O0">
+
+  <label for="bf2">Conscientiousness</label>
+  <input type="range" name="bf2" id="bf2" value="50" min="0" max="1O0">
+
+  <label for="bf3">Extraversion</label>
+  <input type="range" name="bf3" id="bf3" value="50" min="0" max="1O0">
+
+  <label for="bf4">Agreeableness</label>
+  <input type="range" name="bf4" id="bf4" value="50" min="0" max="1O0">
+
+  <label for="bf5">Neuroticism</label>
+  <input type="range" name="bf5" id="bf5" value="50" min="0" max="1O0">
+
+  <label for="image">Image</label>
+  <input type="file" name="image" accept="image/*">
+
+  <label for="birthdate">Birthdate</label>
+  <input id="birthdate" name="birthdate" type="Double">
+   
+  <label for="location">Location</label>
+  <input id="location" name="location" type="text">
+
   <label for="confirm">Confirm Password</label>
-  
   <input id="confirm" name="confirm" value="" type="password">
 
   <button type="submit" class="btn btn-primary btn-large">Register</button>
