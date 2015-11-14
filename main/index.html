@@ -14,7 +14,14 @@
   <link rel="stylesheet" href="index_files/bootstrap.css">
   
   <link rel="stylesheet" href="index_files/styles.css">
-
+  
+  <script type="text/javascript">
+  
+  function MoveForward() {
+			window.location.replace("https://newtinder.firebaseapp.com/register.html");
+  };
+  
+  </script>
   
 </head>
 <body class="main main-index">
@@ -25,7 +32,8 @@
     <div class="container">
       <a class="brand" href="https://newtinder.firebaseapp.com/">GetStarted</a>
       <ul class="nav">
-        <li><a href=""https://newtinder.firebaseapp.com/">Home</a></li><li><li><a href="https://newtinder.firebaseapp.com/login.html">Log in</a></li>
+        <li><a href=""https://newtinder.firebaseapp.com/">Home</a></li>
+		<li><a href="https://newtinder.firebaseapp.com/login.html">Log in</a></li>
         <li><a href="https://newtinder.firebaseapp.com/register.html">Register</a></li></ul>
     </div>
   </div>
@@ -34,45 +42,38 @@
   <div class="hero-unit">
     <h1>Welcome!</h1>
     <p>
-      Welcome to GetStarted, the new solution for entrepreneurship, <strong>GetStarted!</strong>
+      Welcome to GetStarted, the new solution for entrepreneurship.
+        <button onclick="event.preventDefault(); return validateForm()" class="btn btn-primary btn-large">GetStarted today!</button>
     </p>
-  </div>
+	</div>
   <div class="row">
     <div class="span4">
       <div class="well repo-info">
         <h2>Our Team</h2>
-        <ul class="repo-actions">
-        </ul>
+        <p>We're a small team of programmers working to make startups better.  Keep watching this space -- we're looking to expand.</p>
       </div>
     </div>
     <div class="span4">
       <div class="well repo-info">
         <h2>Our Mission</h2>
-        <ul class="repo-actions">
-        </ul>
+        <p>We're driven to improve the entrepreneurship experience.  We believe that there is an incredible resource of human potential just waiting to be unlocked by proper collaboration. </p>
+		
       </div>
     </div>
     <div class="span4">
       <div class="well repo-info">
         <h2>What Next?</h2>
-        <ul class="repo-actions">
-        </ul>
+        <p>After you've created an account and found a team, we'll keep working with you to help you move forward in your development.  From hosting design workshops to providing networking support, we're there for you. </p>
+		
       </div>
     </div>
   </div>
   <div class="row">
     <div class="span10 offset1">
-      <p>Flask-Social is an extension for the wonderful Python web framework, <a href="http://flask.pocoo.org/">Flask</a>. It aims to add simple OAuth provider integration to your application. It is dependent on the <a href="http://packages.python.org/Flask-Security">Flask-Security</a> extension which provides simple user management. This website serves as an example of how to use both extensions effectively.</p>
-      <p>Essentially, Flask-Social sets up endpoints for your app to 
-make it easy for you to let your users connect and/or login using 
-Facebook and Twitter. Flask-Social persists the connection information 
-and allows you to get a configured instance of an API object with your 
-user’s token so you can make API calls on behalf of them. Currently 
-Facebook and Twitter are supported out of the box as long as you install
- the appropriate API library.</p>
-    </div>
+      <p>GetStarted is the next word in entrepreneurship.  Our goal is to connect you with the best possible partners, scientifically chosen to make the best-performing team possible.  We support you through every stage of the entrepreneurship process, providing networking help, consulting and training.</p>
   </div>
-<footer class="footer"><footer class="footer">
+  </div>
+<footer class="footer">
 	  <p>Ready to jumpstart your project? GetStarted!</p>
       <p>Copyright © 2015 by GetStarted</p>
      </footer>

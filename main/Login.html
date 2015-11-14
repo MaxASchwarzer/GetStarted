@@ -18,8 +18,10 @@
 
 <script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
 <script type = "text/javascript">
+	
     // Create a callback which logs the current auth state
 	var ref = new Firebase("https://newtinder.firebaseio.com/");
+	ref.unauth();
     function authDataCallback(authData) {
       if (authData) {
         console.log("User " + authData.uid + " is logged in with " + authData.provider);
@@ -37,20 +39,18 @@
 		console.log("Hello!");
 		x = document.forms["LoginForm"]["email"].value
 		y = document.forms["LoginForm"]["password"].value
-		var authdata = ref.getAuth();
     ref.authWithPassword({
       email    : x,
       password : y
     }, function(error, userData) {
       if (error) {
         console.log("Login Failed!", error);
+		return false;
       } else {
-          console.log("Authenticated successfully with payload:", authData);
+          console.log("Authenticated successfully");
+			window.location.replace("https://newtinder.firebaseapp.com/form.html");
 		}
     });
-	sessionStorage.setItem('email', x);
-	sessionStorage.setItem('uid', ref.getAuth().uid);
-	window.location.replace("https://newtinder.firebaseapp.com/form.html");
 	}
 </script>
 

@@ -44,15 +44,13 @@
     ref.authWithPassword({
       email    : x,
       password : y
-    }, function(error, userData) {
+    }, function(error) {
       if (error) {
         console.log("Login Failed!", error);
       } else {
-          console.log("Authenticated successfully with payload:", authData);
+          console.log("Authenticated successfully with payload:");
 		}
     });
-	sessionStorage.setItem('email', x);
-	sessionStorage.setItem('uid', ref.getAuth().uid);
 	window.location.replace("https://newtinder.firebaseapp.com/form.html");
 	};
 </script>

@@ -18,6 +18,35 @@
 <script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
 
 <script type='text/javascript'>
+
+
+	var ref = new Firebase("https://newtinder.firebaseio.com/");
+
+function setStartingValues() {
+uid = ref.getAuth().uid;
+var childRef = ref.child("Users");
+ ref.orderByKey().on("child_added", function(snapshot) {
+ console.log(snapshot.key());
+	if (snapshot.key()[Users][uid] != {}) {
+	document.forms["InfoForm"]["email"].value = snapshot[uid]["email"];
+	document.forms["InfoForm"]["firstName"].value = snapshot[uid]["fname"];
+	document.forms["InfoForm"]["lastName"].value = snapshot[uid]["lname"];
+	document.forms["InfoForm"]["skills"].value = snapshot[uid]["skills"];
+	document.forms["InfoForm"]["interests"].value = snapshot[uid]["interest"];
+	document.forms["InfoForm"]["experience"].value = snapshot[uid]["experience"];
+	document.forms["InfoForm"]["bf1"].value = snapshot[uid][bigFive]["agreeableness"];
+	document.forms["InfoForm"]["bf2"].value = snapshot[uid][bigFive]["conscientiousness"];
+	document.forms["InfoForm"]["bf3"].value = snapshot[uid][bigFive]["extraversion"];
+	document.forms["InfoForm"]["bf4"].value = snapshot[uid][bigFive]["neuroticism"];
+	document.forms["InfoForm"]["bf5"].value = snapshot[uid][bigFive]["openness"];
+	var time = snapshot[uid]["birthdate"];
+	document.forms["InfoForm"]["location"].value = snapshot[uid]["location"];
+	document.forms["InfoForm"]["gender"].value = snapshot[uid]["gender"];
+	document.forms["InfoForm"]["birthdate"].value = new Date(time);	
+	}
+})};
+setStartingValues();
+
 var imageString;
 function encodeImageFileAsURL(){
 
@@ -35,20 +64,21 @@ function encodeImageFileAsURL(){
             newImage.src = srcData;
 
             document.getElementById("imgTest").innerHTML = newImage.outerHTML;
-			imageString = ("image", document.getElementById("imgTest").innerHTML);
+			imageString = ("image", document.getElementById("imgTest").innerHTML).substring(36, str.length);
         }
         fileReader.readAsDataURL(fileToLoad);
     }
 };
 
-	var ref = new Firebase("https://newtinder.firebaseio.com/");
 	
 
 	function submitForm() {
+	
+	var	uid = ref.getAuth().uid.toString();
+
 	var email = document.forms["InfoForm"]["email"].value;
 	var fname = document.forms["InfoForm"]["firstName"].value;
 	var lname = document.forms["InfoForm"]["lastName"].value;
-	var role = document.forms["InfoForm"]["role"].value;
 	var skills = document.forms["InfoForm"]["skills"].value;
 	var interests = document.forms["InfoForm"]["interests"].value;
 	var experience = document.forms["InfoForm"]["experience"].value;
@@ -59,15 +89,10 @@ function encodeImageFileAsURL(){
 	var bf5 = document.forms["InfoForm"]["bf5"].value;
 	var birthdate = document.forms["InfoForm"]["birthdate"].value;
 	var location = document.forms["InfoForm"]["location"].value;
-	var confirm = document.forms["InfoForm"]["confirm"].value;
 	var gender = document.forms["InfoForm"]["gender"].value;
-	var uid;
-	var authData = ref.getAuth();
 	var time = new Date(birthdate).getTime();
 	
-	validateForm();
 
-	uid = authData.uid.toString();
 	console.log(imageString);
 	var sanitizedEmail = email.replace(/[.]/g, ",");
 	
@@ -76,7 +101,6 @@ function encodeImageFileAsURL(){
 		"email": sanitizedEmail,
 		"firstName": fname,
 		"lastName": lname,
-		"role": role,
 		"skills": skills,
 		"interest": interests,
 		"experience": experience,
@@ -106,6 +130,8 @@ function encodeImageFileAsURL(){
 	UsersListRef.update(UsersListDict);
 	
 	window.alert("Thanks!  Head on over to the iOS app to GetStarted!");
+	ref.unauth();
+	window.location.replace("https://newtinder.firebaseapp.com");
 	}
 
 	
@@ -127,8 +153,6 @@ function encodeImageFileAsURL(){
           console.log("Authenticated successfully with payload:", authData);
 		}
     });
-	sessionStorage.setItem('email', x);
-	sessionStorage.setItem('uid', ref.getAuth().uid);
 	};
 </script>
   
@@ -142,7 +166,8 @@ function encodeImageFileAsURL(){
     <div class="container">
       <a class="brand" href="https://newtinder.firebaseapp.com/">GetStarted</a>
       <ul class="nav">
-        <li><a href=""https://newtinder.firebaseapp.com/">Home</a></li><li><li><a href="https://newtinder.firebaseapp.com/login.html">Log in</a></li>
+        <li><a href="https://newtinder.firebaseapp.com/index.html">Home</a></li>
+		<li><a href="https://newtinder.firebaseapp.com/login.html">Log in</a></li>
         <li><a href="https://newtinder.firebaseapp.com/register.html">Register</a></li></ul>
     </div>
   </div>
@@ -164,9 +189,6 @@ function encodeImageFileAsURL(){
       
   <label for="lastName">Last Name</label>
   <input id="lastName" name="lastName" type="text">
-
-  <label for="role">Role</label>
-  <input id="role" name="role" type="text">
 
   <label for="skills">Skills</label>
   <input id="skills" name="skills" type="text">
@@ -208,10 +230,7 @@ function encodeImageFileAsURL(){
    
   <label for="location">Location</label>
   <input id="location" name="location" type="text">
-
-  <label for="confirm">Confirm Password</label>
-  <input id="confirm" name="confirm" value="" type="password">
-
+  
   <label></label>
   <button type="submit" onclick="event.preventDefault(); return submitForm()" class="btn btn-primary btn-large">Submit</button>
     </form>
