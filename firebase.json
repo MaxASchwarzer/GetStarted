@@ -1,0 +1,9 @@
+{
+  "firebase": "newtinder",
+  "public": "main",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}
