@@ -6,22 +6,37 @@
 <html class="no-js" lang="en"><!--<![endif]--><head>
 <script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
 <script type = "text/javascript">
-
+    // Create a callback which logs the current auth state
+    function authDataCallback(authData) {
+      if (authData) {
+        console.log("User " + authData.uid + " is logged in with " + authData.provider);
+      } else {
+        console.log("User is logged out");
+      }
+    }
+    // Register the callback to be fired every time auth state changes
+    var ref = new Firebase("https://newtinder.firebaseio.com/");
+	var x;
+	var y;
+	
+    ref.onAuth(authDataCallback);
 	function validateForm() {
 		console.log("Hello!");
-		var x = document.forms["LoginForm"]["email"].value
-		var y = document.forms["LoginForm"]["password"].value
-	    var ref = new Firebase("https://newtinder.firebaseio.com/");
-    ref.createUser({
+		x = document.forms["LoginForm"]["email"].value
+		y = document.forms["LoginForm"]["password"].value
+		var authdata = ref.getAuth();
+    ref.authWithPassword({
       email    : x,
       password : y
     }, function(error, userData) {
       if (error) {
-        console.log("Error creating user:", error);
+        console.log("Login Failed!", error);
       } else {
-        console.log("Successfully created user account with uid:", userData.uid);
-      }
+          console.log("Authenticated successfully with payload:", authData);
+		}
     });
+	sessionStorage.setItem('email', x);
+	sessionStorage.setItem('uid', ref.getAuth().uid);
 	}
 </script>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -31,9 +46,9 @@
   <meta name="description" content="A working example of the Flask-Social extension for Flask, a web microframework written in Python">
   <meta name="viewport" content="width=device-width">
   
-  <link rel="stylesheet" href="Flask-Social%20Example%20Login_files/bootstrap.css">
+  <link rel="stylesheet" href="Login_files/bootstrap.css">
   
-  <link rel="stylesheet" href="Flask-Social%20Example%20Login_files/styles.css">
+  <link rel="stylesheet" href="Login_files/styles.css">
   
   
 </head>
@@ -43,10 +58,10 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="https://newtinder.firebaseapp.com/">GetStarted Login</a>
+      <a class="brand" href="https://newtinder.firebaseapp.com/">GetStarted</a>
       <ul class="nav">
-        <li><a href="http://flask-social-example.herokuapp.com/">Home</a></li>
-        <li><a href="http://flask-social-example.herokuapp.com/register">Register</a></li></ul>
+        <li><a href=""https://newtinder.firebaseapp.com/">Home</a></li>
+        <li><a href="https://newtinder.firebaseapp.com/register">Register</a></li></ul>
     </div>
   </div>
 </div>
@@ -78,12 +93,12 @@
 	  </footer>
   </div>
   
-  <script type="text/javascript" src="Flask-Social%20Example%20Login_files/jquery-1.js"></script>
+  <script type="text/javascript" src="Login_files/jquery-1.js"></script>
   
-  <script type="text/javascript" src="Flask-Social%20Example%20Login_files/bootstrap.js"></script>
+  <script type="text/javascript" src="Login_files/bootstrap.js"></script>
   
   
-  <script type="text/javascript" src="Flask-Social%20Example%20Login_files/main.js"></script>
+  <script type="text/javascript" src="Login_files/main.js"></script>
   
 
 </body></html>
